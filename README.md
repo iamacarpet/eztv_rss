@@ -30,7 +30,7 @@ You shouldn't need any - Good luck ;).
 
 ## Open Source Projects Used
 
-This code is based on the origional work from here: [http://tfeserver.be/downloadhtml/eztv_scripts/]
+This code is based on the origional work from here: http://tfeserver.be/downloadhtml/eztv_scripts/
 
 ## License
 
