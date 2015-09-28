@@ -41,10 +41,11 @@ my $dbi=DBI->connect(
 
 my $browser = LWP::UserAgent->new;
 $browser->timeout(10);
+$browser->agent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0');
 
-my $url = 'http://eztv.it/search/';
-my $main_url = 'http://eztv.it/page_%num%';
-my $tvnews_url = 'http://eztv.it/tvnews/';
+my $url = 'https://eztv.ag/search/';
+my $main_url = 'https://eztv.ag/page_%num%';
+my $tvnews_url = 'https://eztv.ag/tvnews/';
 my %month = (
     'January'       => "01",
     'February'      => "02",
@@ -118,7 +119,7 @@ padding:10px;
 <?xml version=\"1.0\" encoding=\"UTF-8\" ?>
 			<rss version=\"2.0\">
 			<channel>
-			<title>Dynamic rss from eztv.it search</title>
+			<title>Dynamic rss from eztv.ag search</title>
 			<link>http://tfeserver.be</link>
 			<ttl>30</ttl>
 			<description>EZTV RSS feed for selected show/news</description>
@@ -254,7 +255,7 @@ padding:10px;
 						$last_added_on = UnixDate(ParseDate($last_added_on),"%a, %d %b %Y %H:%M:%S GMT" );
 					}
 				}
-				if($tr_data =~ /class="epinfo">(.*?)<\/a>.*?<\/a>.*?href="(.*?)"/sg)
+				if($tr_data =~ /class="epinfo">(.*?)<\/a>.*?href="(.*?)".*?<\/a>.*?href="(.*?)"/sg)
 				{
 					if($format && $format eq 'html')
 					{
@@ -263,14 +264,17 @@ padding:10px;
 					else
 					{
 						my $title = $1;
-						my $link = $2;
-						$link =~ s/&amp;/&/g;
-						if ($link =~ /^(.*)\/(.*?)\?(.*)$/){
-								$link = $1."/".uri_escape($2)."?".$3."&type=torrent";
+						my $link1 = $2;
+						my $link2 = $3;
+						my $link;
+						$link1 =~ s/&amp;/&/g;
+						$link2 =~ s/&amp;/&/g;
+						if ($link1 =~ /^magnet\:\?xt.*$/){
+								$link = $link1;
 						} else{
-							if($link =~ /^(.*)\/(.*?)$/)
+							if($link2 =~ /^magnet\:\?xt.*$/)
 							{
-								$link  = $1."/".uri_escape($2);
+								$link  = $link2;
 							}
 						}
 

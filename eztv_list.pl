@@ -15,9 +15,10 @@ $SIG{TERM} = \&sig_handler;
 #$SIG{PIPE} = 'IGNORE';
 
 
-my $browser = LWP::UserAgent->new;
+my $browser = LWP::UserAgent->new(ssl_opts => { verify_hostname => 1 });
 $browser->timeout(10);
-my $url = 'http://eztv.it/';
+$browser->agent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0');
+my $url = 'https://eztv.ag/';
 
 my $request = FCGI::Request();
 
